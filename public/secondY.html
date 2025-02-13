@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second Year Courses - Enhanced</title>
+
+    <!-- FusionCharts and theme -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+         body {
+            background-image: url('image/main2.webp');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 2rem 0;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .section {
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: #007bff;
+        }
+
+        .chart-container {
+            margin: 2rem auto;
+        }
+
+        .table-container table thead {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table-container table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .table td a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding: 1rem;
+            text-align: center;
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .table-container {
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .table td a:hover {
+            text-decoration: underline;
+        }
+
+
+
+        .insights-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .insight-item {
+            margin-bottom: 1rem;
+        }
+
+        .resource-summary {
+            margin: 2rem auto;
+            max-width: 900px;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            /* Special Sections */
+        }
+
+        .overview {
+            background-color: #e9f5ff;
+        }
+
+        .insights-container {
+            background-color: #fff7e6;
+        }
+
+        .resource-summary {
+            background-color: #e6ffe6;
+        }
+
+        .table-container {
+            background-color: #ffffff;
+        }
+
+        footer p {
+            margin: 0;
+            color: #e4dbdb;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            padding: 1rem;
+            background-color: #343a40;
+            color: white;
+        }
+
+        .social-icons a {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #00b3ff;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-nav {
+                text-align: center;
+            }
+
+            .carousel-inner img {
+                max-height: 50vh;
+            }
+        }
+    </style>
+
+    <!-- FusionCharts Script -->
+    <script type="text/javascript">
+        const chartData = [{
+            "label": "Data Structures",
+            "value": "9.5"
+        }, {
+            "label": "Object-Oriented Programming with Java",
+            "value": "8.7"
+        }, {
+            "label": "Database Management Systems",
+            "value": "9.0"
+        }, {
+            "label": "Discrete Mathematics",
+            "value": "7.8"
+        }, {
+            "label": "Operating Systems",
+            "value": "8.9"
+        }];
+
+        const chartConfig = {
+            type: 'column2d',
+            renderAt: 'chart-container',
+            width: '100%',
+            height: '400',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "caption": "Important Subjects in Second Year for Data Science",
+                    "subCaption": "Based on Industry Requirements",
+                    "xAxisName": "Subjects",
+                    "yAxisName": "Importance Level",
+                    "theme": "fusion",
+                    "paletteColors": "#007bff",
+                },
+                "data": chartData
+            }
+        };
+
+        FusionCharts.ready(function () {
+            var fusioncharts = new FusionCharts(chartConfig);
+            fusioncharts.render();
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Page Title -->
+    <div class="page-title">
+        Second Year Important Subjects
+    </div>
+
+    <!-- Overview Section -->
+    <section class="section">
+        <div class="section-title">Overview</div>
+        <p class="text-center">
+            This page highlights the key subjects that second-year students should focus on to build a strong foundation in Data Science, Software Development, and System Engineering.
+        </p>
+    </section>
+
+    <!-- Chart Container -->
+    <section class="section">
+        <div class="section-title">Visual Representation</div>
+        <div id="chart-container" class="chart-container"></div>
+    </section>
+
+    <!-- Key Insights Section -->
+    <section class="section">
+        <div class="section-title">Key Insights</div>
+        <ul>
+            <li><strong>Data Structures:</strong> Essential for coding interviews and understanding algorithm efficiency.</li>
+            <li><strong>OOP with Java:</strong> Industry-standard for software development, backend systems, and object-oriented design.</li>
+            <li><strong>Database Management Systems:</strong> Crucial for handling structured data, SQL queries, and relational databases.</li>
+            <li><strong>Discrete Mathematics:</strong> Provides the foundation for algorithms, cryptography, and data structures.</li>
+            <li><strong>Operating Systems:</strong> Understanding OS concepts is important for systems programming, kernel development, and resource management.</li>
+        </ul>
+    </section>
+
+    <!-- Table Section -->
+    <div class="table-container section">
+        <h2 class="section-title">Learning Resources</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">S.No</th>
+                    <th scope="col">Subjects</th>
+                    <th scope="col">YouTube Link</th>
+                    <th scope="col">Notes Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Data Structures</td>
+                    <td><a href="https://www.youtube.com/playlist?list=PLrk5tgtnMN6TKVULB5nK7kCyt6HjVPSvc" target="_blank">Watch Playlist</a></td>
+                    <td><a href="https://www.cs.cmu.edu/~clo/courses/cs150/lectures/DS.pdf" target="_blank">Download Notes</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>OOP with Java</td>
+                    <td><a href="https://www.youtube.com/watch?v=eIrMbAQSU34" target="_blank">Watch Playlist</a></td>
+                    <td><a href="https://cs.brown.edu/courses/cs015/docs/JavaOO.pdf" target="_blank">Download Notes</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Resource Summary Section -->
+    <section class="section">
+        <div class="section-title">Resource Summary</div>
+        <p>
+            We’ve curated some of the best online resources for your learning journey. Explore the video playlists on YouTube for programming and mathematics topics, and download lecture notes to deepen your understanding.
+        </p>
+        <ul>
+            <li><strong>Data Structures:</strong> <a href="https://www.youtube.com/playlist?list=PLrk5tgtnMN6TKVULB5nK7kCyt6HjVPSvc" target="_blank">Watch Playlist</a>, <a href="https://www.cs.cmu.edu/~clo/courses/cs150/lectures/DS.pdf" target="_blank">Download Notes</a></li>
+            <li><strong>OOP with Java:</strong> <a href="https://www.youtube.com/watch?v=eIrMbAQSU34" target="_blank">Watch Playlist</a>, <a href="https://cs.brown.edu/courses/cs015/docs/JavaOO.pdf" target="_blank">Download Notes</a></li>
+        </ul>
+    </section>
+
+    <footer>
+        <div class="footer">
+            <div class="social-icons my-3">
+                <a href="ds.html" target="_blank"><i class="bi bi-house-door-fill"></i></a>
+            </div>
+            <p>&copy; 2025 Course Insights. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
