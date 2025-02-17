@@ -6,52 +6,47 @@
 }
 
 body {
-    background-image: url('image/uni.avif'); /* Replace with your image URL */
+    background-image: url('image/inquiry.webp');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     height: 100vh;
 }
 
+
+
 .contact-container {
-    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 500px;
-    width: 100%;
+    background-color: rgba(255, 255, 255, 0.926);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 600;
     color: #333;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+    text-align: left;
 }
 
 label {
-    font-weight: 500;
-    font-size: 14px;
-    margin-bottom: 5px;
-    display: block;
+    font-weight: 600;
 }
 
-input[type="email"],
-textarea {
+input, textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    font-size: 16px;
+    padding: 20px;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 textarea {
@@ -59,74 +54,39 @@ textarea {
     height: 100px;
 }
 
-fieldset {
-    margin-top: 15px;
-}
-
-.radio-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.radio-group label {
-    margin-bottom: 10px;
-}
-
-.form-check {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.form-check input {
-    margin-right: 10px;
-}
-
-.checkbox-group {
-    margin-top: 15px;
-}
-
 .btn-submit {
     width: 100%;
-    padding: 12px;
-    background-color: #1e90ff;
-    border: none;
+    background: #1e90ff;
     color: white;
-    font-size: 18px;
-    border-radius: 8px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    transition: 0.3s;
 }
 
 .btn-submit:hover {
-    background-color: #0066cc;
+    background: #0a38d1ad;
 }
 
-.info-section {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
+/* Success Message */
+#success-message {
+    display: none;
+    background: white;
     text-align: center;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 450px;
 }
 
-.info-section h2 {
-    font-size: 18px;
-    font-weight: 600;
+#success-message i {
+    font-size: 50px;
+    color: green;
     margin-bottom: 10px;
 }
 
-.info-section ul {
-    list-style: none;
-}
-
-.info-section ul li {
-    font-size: 14px;
-    margin-bottom: 6px;
-}
-
-.info-section ul li i {
-    margin-right: 8px;
-    color: #00bcd4;
+.hidden {
+    display: none;
 }

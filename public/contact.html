@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,69 +12,79 @@
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link rel="stylesheet" href="contact.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+   
+     <!-- EmailJS Connection-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: "VXnFqJJzYbiTQ0FG",
+            });
+        })();
+    </script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="contact.css">
 </head>
+
 <body>
+
+
     <!-- Contact Form Container -->
     <div class="contact-container">
         <h1>Inquiry</h1>
-        <form>
-            <!-- Email Input -->
+        <form id="contactForm">
             <div class="form-group">
                 <label for="inputEmail3">Email</label>
-                <input type="email" id="inputEmail3" placeholder="Enter your email" required>
+                <input type="email" id="inputEmail3" name="email" placeholder="Enter your email" required>
             </div>
 
-            <!-- Year of Study Radio Group -->
             <fieldset>
                 <legend>In Which Year You are Studying:</legend>
                 <div class="radio-group">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                        <label class="form-check-label" for="gridRadios1">1st Year Student</label>
+                        <input class="form-check-input" type="radio" name="year" value="1st Year Student" checked>
+                        <label>1st Year Student</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                        <label class="form-check-label" for="gridRadios2">2nd Year Student</label>
+                        <input class="form-check-input" type="radio" name="year" value="2nd Year Student">
+                        <label>2nd Year Student</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                        <label class="form-check-label" for="gridRadios3">3rd Year Student</label>
+                        <input class="form-check-input" type="radio" name="year" value="3rd Year Student">
+                        <label>3rd Year Student</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                        <label class="form-check-label" for="gridRadios4">Final Year Student</label>
+                        <input class="form-check-input" type="radio" name="year" value="Final Year Student">
+                        <label>Final Year Student</label>
                     </div>
                 </div>
             </fieldset>
 
-            <!-- Program Checkbox Group -->
-            <div class="checkbox-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1" value="option1">
-                    <label class="form-check-label" for="gridCheck1">BTECH IT DATA SCIENCE</label>
-                </div>
-            </div>
-
-            <!-- Query Textarea -->
             <div class="form-group">
                 <label for="queryTextarea">Your Query/Comment</label>
-                <textarea id="queryTextarea" placeholder="Enter your query or comment here"></textarea>
+                <textarea id="queryTextarea" name="query" placeholder="Enter your query or comment here"
+                    required></textarea>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="btn-submit">Submit</button>
         </form>
-
-        <!-- Information Section -->
-        <div class="info-section">
-            <h2>Why Contact Us?</h2>
-            <ul>
-                <li><i class="fa-solid fa-check-circle"></i> Get assistance with your queries</li>
-                <li><i class="fa-solid fa-check-circle"></i> Learn about upcoming events and workshops</li>
-                <li><i class="fa-solid fa-check-circle"></i> Stay connected with your department</li>
-            </ul>
-        </div>
     </div>
+
+    <!-- Success Message (Hidden Initially) -->
+    <div id="success-message" class="hidden">
+        <i class="fa fa-check-circle"></i>
+        <h2>Form submitted successfully!</h2>
+        <p>Thank you! The form has been submitted successfully.<br>We will reply to you soon!</p>
+        <a href="contact.html">Go back</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="contact.js"></script>
 </body>
+
 </html>
