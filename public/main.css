@@ -38,14 +38,16 @@ nav {
 }
 
 .logo img {
-    width: 65.9px;  /* Increased size for better visibility */
+    width: 95%;  /* Increased size for better visibility */
     height: 65px;
+    filter: drop-shadow(5px 5px 5px #07070785);
     margin-right: 25px;
     border-radius: 15px; /* Slightly rounded edges for a modern look */
     object-fit: contain; /* Ensures the full logo is visible without cropping */
     background-color: rgba(255, 255, 255, 0.2); /* Adds slight contrast */
     padding: 2.9px; /* Adds padding inside the background */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for better visibility */
+    
 }
 
 @media (max-width: 768px) {
