@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url('image/inquiry.webp');
+    background-image: url('image/uni.avif');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -20,7 +20,7 @@ body {
 
 
 .contact-container {
-    background-color: rgba(255, 255, 255, 0.926);
+    background-color: rgba(255, 255, 255, 0.658);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
