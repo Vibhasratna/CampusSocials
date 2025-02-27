@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f9f9f9d5;
+    background-color: #f9f9f90d;
     color: #333;
     line-height: 1.6;
 
@@ -124,7 +124,7 @@ header.scrolled {
     align-items: center;
     justify-content: center;
     height: 76vh;
-    background: url('image/project_image.jpg') center/cover no-repeat;
+    background: url('image/p.avif') center/cover no-repeat;
     text-align: center;
     color: rgb(22, 21, 21);
     padding: 10px;
@@ -147,7 +147,7 @@ header.scrolled {
     z-index: 2;
     max-width: 900px;
     padding: 40px;
-    background: rgba(247, 246, 246, 0.775); /* Increased transparency */
+    background: rgba(247, 246, 246, 0.589); /* Increased transparency */
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Optional subtle shadow */
     color: #000; /* Ensures text remains readable */

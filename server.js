@@ -3,10 +3,14 @@ const mysql = require("mysql");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path"); // Add this to handle file paths
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// Serve static files (e.g., HTML, CSS, JS) from a "public" folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // MySQL Connection
 const db = mysql.createConnection({
@@ -22,6 +26,11 @@ db.connect((err) => {
         process.exit(1); // Stop server if DB fails
     }
     console.log("✅ MySQL connected...");
+});
+
+// Root Route - Serve the main.html page
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "main.html"));
 });
 
 // Signup Route
@@ -89,4 +98,8 @@ app.get("/api/get-content", (req, res) => {
 });
 
 // Start Server
-app.listen(3000, () => console.log("🚀 Server running on port 3000"));
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Open your browser at: http://localhost:${PORT}`);
+});
