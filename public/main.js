@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Performance tracking
+    const pageLoadStart = Date.now();
+    
     const userAccount = document.getElementById("user-account");
     const joinNowBtn = document.getElementById("join-now");
     const logoutBtn = document.getElementById("logout-button");
     const academicSection = document.getElementById("academic-section");
     const userAvatar = document.querySelector(".user-avatar");
 
+    // Track login state
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
     if (user) {
@@ -19,50 +23,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (email.includes("admin@")) {
             enableEditing("admin");
-            alert("Welcome Admin!");
+            console.log("Admin user detected");
         } else if (email.match(/(1st|2nd|3rd|4th)@/)) {
             enableEditing("year-based");
-            alert("Welcome Course Year Admin!");
+            console.log("Year admin detected");
         }
     } else {
         academicSection.href = "#";
         academicSection.addEventListener("click", (e) => {
             e.preventDefault();
-            alert("You must Join Now to access the Academic Section!");
+            showPopup("You must Join Now to access the Academic Section!");
         });
     }
+
+    // Performance metric
+    console.log(`DOM loaded in ${Date.now() - pageLoadStart}ms`);
 
     logoutBtn.addEventListener("click", () => {
         localStorage.removeItem("loggedInUser");
         window.location.reload();
     });
 
-    // Fetch latest content from DB on page load
-    fetchContentFromDB();
+    // Fetch content with performance tracking
+    const fetchStart = Date.now();
+    fetchContentFromDB().finally(() => {
+        console.log(`Content fetched in ${Date.now() - fetchStart}ms`);
+    });
+
+    // Add performance monitoring button
+    addPerfMonitor();
 });
 
-// Function to enable editing based on user role
 function enableEditing(role) {
-    document.querySelectorAll(".editable").forEach(section => {
+    const sections = document.querySelectorAll(".editable");
+    console.log(`Enabling editing for ${sections.length} sections`);
+    
+    sections.forEach(section => {
         const sectionRole = section.dataset.role;
         
         if (role === "admin" || (role === "year-based" && sectionRole !== "admin")) {
             const content = section.querySelector(".content");
             if (!content) return;
 
-            const existingBtn = section.querySelector(".edit-btn");
-            if (existingBtn) return; // Prevent duplicate buttons
+            if (section.querySelector(".edit-btn")) return;
 
             const editBtn = document.createElement("button");
             editBtn.textContent = "Edit";
             editBtn.classList.add("edit-btn");
             editBtn.style.marginLeft = "10px";
             editBtn.style.cursor = "pointer";
-            editBtn.addEventListener("click", () => {
+            
+            editBtn.addEventListener("click", async () => {
                 const newValue = prompt("Enter new value:", content.textContent);
                 if (newValue !== null) {
+                    const saveStart = Date.now();
+                    await saveContentToDB(section.id, newValue);
+                    console.log(`Save operation took ${Date.now() - saveStart}ms`);
                     content.textContent = newValue;
-                    saveContentToDB(section.id, newValue); // Save to MySQL
                 }
             });
 
@@ -71,46 +88,73 @@ function enableEditing(role) {
     });
 }
 
-// Function to save content to the database
-function saveContentToDB(sectionId, newValue) {
+async function saveContentToDB(sectionId, newValue) {
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (!user) return alert("You need to log in!");
+    if (!user) {
+        showPopup("You need to log in!");
+        return;
+    }
 
-    fetch("http://localhost:3000/api/update-content", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email, section: sectionId, content: newValue })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === "Content updated successfully") {
-            alert("Content saved!");
-        } else {
+    try {
+        const response = await fetch("http://localhost:3000/api/update-content", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                email: user.email, 
+                section: sectionId, 
+                content: newValue 
+            })
+        });
+        
+        const data = await response.json();
+        if (data.message !== "Content updated successfully") {
             throw new Error(data.message);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("Error updating content:", error);
-        alert("Failed to update content.");
-    });
+        showPopup("Failed to update content.");
+    }
 }
 
-// Function to fetch content and update UI
-function fetchContentFromDB() {
-    fetch("http://localhost:3000/api/get-content")
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(item => {
-                const section = document.getElementById(item.section);
-                if (section) {
-                    section.querySelector(".content").textContent = item.content;
+async function fetchContentFromDB() {
+    try {
+        const response = await fetch("http://localhost:3000/api/get-content");
+        const data = await response.json();
+        
+        data.forEach(item => {
+            const section = document.getElementById(item.section);
+            if (section) {
+                const contentElement = section.querySelector(".content");
+                if (contentElement) {
+                    contentElement.textContent = item.content;
                 }
-            });
-        })
-        .catch(error => console.error("Error fetching content:", error));
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching content:", error);
+    }
 }
 
-// Function to show a pop-up message
-function showPopup(message) {
-    alert(message);
+function addPerfMonitor() {
+    const perfBtn = document.createElement("button");
+    perfBtn.textContent = "Show Metrics";
+    perfBtn.style.position = "fixed";
+    perfBtn.style.bottom = "20px";
+    perfBtn.style.right = "20px";
+    perfBtn.style.zIndex = "1000";
+    
+    perfBtn.addEventListener("click", async () => {
+        try {
+            const response = await fetch("http://localhost:3000/api/perf-metrics");
+            const data = await response.json();
+            showPopup(`System Metrics:\nUsers: ${data.metrics.userCount}\nUptime: ${Math.floor(data.metrics.uptime)}s`);
+        } catch (error) {
+            console.error("Failed to fetch metrics:", error);
+            showPopup("Couldn't load metrics");
+        }
+    });
+    
+    document.body.appendChild(perfBtn);
 }
+function showPopup(message) {
+    alert(message);}

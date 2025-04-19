@@ -3,54 +3,76 @@ const mysql = require("mysql");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path"); // Add this to handle file paths
+const path = require("path");
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve static files (e.g., HTML, CSS, JS) from a "public" folder
+// Performance monitoring middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.url} - ${duration}ms`);
+  });
+  next();
+});
+
+// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
 // MySQL Connection
 const db = mysql.createConnection({
     host: "localhost",
-    user: "root", // Replace with your MySQL username
-    password: "vr@20212", // Replace with your MySQL password
+    user: "root",
+    password: "vr@20212",
     database: "campus_social"
 });
 
 db.connect((err) => {
     if (err) {
         console.error("Database connection failed:", err);
-        process.exit(1); // Stop server if DB fails
+        process.exit(1);
     }
     console.log("✅ MySQL connected...");
 });
 
-// Root Route - Serve the main.html page
+// Routes
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "main.html"));
 });
 
-// Signup Route
+// Signup Route with error rate tracking
 app.post("/api/signup", async (req, res) => {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    db.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, hashedPassword], (err) => {
-        if (err) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-        res.json({ message: "Signup successful" });
-    });
+        db.query("INSERT INTO users (email, password) VALUES (?, ?)", 
+            [email, hashedPassword], 
+            (err) => {
+                if (err) {
+                    console.error("Signup error:", err);
+                    return res.status(400).json({ message: "User already exists" });
+                }
+                res.json({ message: "Signup successful" });
+            });
+    } catch (err) {
+        console.error("Server error:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
-// Login Route
+// Login Route with performance tracking
 app.post("/api/login", (req, res) => {
+    const startTime = Date.now();
     const { email, password } = req.body;
 
     db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+        const queryTime = Date.now() - startTime;
+        console.log(`Login query time: ${queryTime}ms`);
+        
         if (err || results.length === 0) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
@@ -60,23 +82,27 @@ app.post("/api/login", (req, res) => {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        res.json({ message: "Login successful", user: results[0] });
+        res.json({ 
+            message: "Login successful", 
+            user: results[0] 
+        });
     });
 });
 
-// API to update content (Admins & Year-Based Admins)
+// Content API with role validation
 app.post("/api/update-content", (req, res) => {
     const { email, section, content } = req.body;
 
-    // Check if the user is an admin or a year-based admin
     if (!email.includes("admin@") && !email.match(/(1st|2nd|3rd|4th)@/)) {
         return res.status(403).json({ message: "Unauthorized access" });
     }
 
+    const queryStart = Date.now();
     db.query(
         "INSERT INTO content (section, content) VALUES (?, ?) ON DUPLICATE KEY UPDATE content = ?",
         [section, content, content],
         (err) => {
+            console.log(`Update query time: ${Date.now() - queryStart}ms`);
             if (err) {
                 console.error("Database error:", err);
                 return res.status(500).json({ message: "Database error" });
@@ -86,14 +112,19 @@ app.post("/api/update-content", (req, res) => {
     );
 });
 
-// API to fetch all content
-app.get("/api/get-content", (req, res) => {
-    db.query("SELECT section, content FROM content", (err, results) => {
+// New API endpoint for performance testing
+app.get("/api/perf-metrics", (req, res) => {
+    db.query("SELECT COUNT(*) as userCount FROM users", (err, results) => {
         if (err) {
-            console.error("Error fetching content:", err);
+            console.error("Perf metrics error:", err);
             return res.status(500).json({ message: "Database error" });
         }
-        res.json(results);
+        res.json({
+            metrics: {
+                userCount: results[0].userCount,
+                uptime: process.uptime()
+            }
+        });
     });
 });
 
